@@ -21,56 +21,43 @@ using namespace std;
 
 using ll = long long;
 
-vector<ll>  A;
-vector<int> idx_lower;
-
 int main()
 {
     int n, k;
     cin >> n >> k;
 
-    A.resize(n);
-    idx_lower.resize(n);
+    deque<ll> A(n);
 
     for (int i = 0; i < n; i++) {
         cin >> A[i];
     }
 
-    sort(A.begin(), A.end());
+    sort(A.begin(), A.end(), greater<ll>());
+    A.push_back(0);
 
-    int index_curr = 0;
-    ll  last = A[0];
-    idx_lower[0] = index_curr;
-    for (int i = 1; i < n; i++) {
-        if (A[i] == A[i-1]) {
-            idx_lower[i] == index_curr;
-        } else {
-            idx_lower[i] = i;
-            index_curr = i;
+    ll ans = 0;
+    ll ns = 0;
+    ll k_cnt = 0;
+    for (auto i = 0; i < n; i++) {
+        ns ++;
+        if (A[i] == A[i+1]) continue;
+
+        if (k_cnt + ns * (A[i] - A[i+1]) > k) {
+            ll remain = k - k_cnt;
+            ll row = remain / ns;
+            ans += ns * row * (A[i] + A[i] - row + 1) / 2;
+            ll col = remain - row * ns;
+            ans += col * (A[i] - row);
+            break;
         }
+        k_cnt += ns * (A[i] - A[i+1]);
+        ans += ns * (A[i] - A[i+1]) * (A[i] + A[i+1] + 1) / 2;
     }
 
-    ll S = 0;
-
-    for (int i = 0; i < k; i++) {
-        ll M = A[n-1];
-        if (M <= 0) break;
-        int lower = idx_lower[n-1];
-        A[lower]--;
-        if (lower > 0 && A[lower] == A[lower-1]) {
-            idx_lower[lower] = idx_lower[lower-1];
-        }
-        if (lower < n-1 && A[lower] < A[lower+1]) {
-            idx_lower[lower+1] = lower+1;
-        }
-        S += M;
-    }
-
-    cout << S << endl;
+    cout << ans << endl;
 
     return 0;
 }
-
 
 #ifdef D
 
@@ -93,67 +80,55 @@ int main()
         }
     }
 
-    vector<int> first_pos(n+1, -1);
-
-    int remain = n;
-    while (remain > 0) {
-        bool found = false;
-        fill(first_pos.begin(), first_pos.end(), -1);
-        for (int i = 0; i < m; i++) {
-            if (vQ[i].empty()) continue;
-            int top = vQ[i].front();
-            int prev= first_pos[top];
-            if (prev >= 0) {
-                vQ[prev].pop();
-                vQ[i].pop();
-                remain--;
-                found = true;
-                break;
-            }
-            else {
-                first_pos[top] = i;
-            }
-        }
-        if (found == false) {
-            cout << "No" << endl;
-            return 0;
-        }
-    }
-
-    cout << "Yes" << endl;
-
-
-    return 0;
-}
-
-#endif
-
-#ifdef C
-
-int main()
-{
-    ll n;
-    cin >> n;
-
-    vector<char> S;
-    while (n != 0) {
-        if (n % 2 == 1) {
-            n -= 1;
-            S.push_back('A');
+    map<int, int> top_color;  // color => id
+    queue<pair<int, int>> top_pairs;
+    for (int i = 0; i < m; i++) {
+        if (vQ[i].empty()) continue;
+        int top = vQ[i].front();
+        auto it = top_color.find(top);
+        if (it != top_color.end()) {
+            top_pairs.push(make_pair(it->second, i));
         }
         else {
-            n /= 2;
-            S.push_back('B');
+            top_color[top] = i;
         }
     }
 
-    reverse(S.begin(), S.end());
-    for ( auto& c : S ) {
-        cout << c;
+    int removed = 0;
+    while (!top_pairs.empty()) {
+        auto pair = top_pairs.front();
+        top_pairs.pop();
+
+        int remove_color = vQ[pair.first].front();
+        top_color.erase(remove_color);
+
+        int ids[2] = {pair.first, pair.second};
+
+        for (int j = 0; j < 2; j++) {
+            int id = ids[j];
+            vQ[id].pop();
+            if (vQ[id].empty()) continue;
+            int new_color = vQ[id].front();
+            auto it = top_color.find(new_color);
+            if (it != top_color.end()) {
+                top_pairs.push(make_pair(it->second, id));
+            }
+            else {
+                top_color[new_color] = id;
+            }
+        }
+        removed++;
     }
-    cout << endl;
+
+    if (removed == n) 
+        cout << "Yes" << endl;
+    else
+        cout << "No" << endl;
 
     return 0;
 }
 
 #endif
+
+
+
