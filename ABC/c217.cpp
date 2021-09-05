@@ -21,6 +21,49 @@ using namespace std;
 
 using ll = long long;
 
+int main()
+{
+    int q;
+    cin >> q;
+
+    queue<ll> Q;
+    priority_queue<ll, vector<ll>, greater<ll>> PQ;
+
+    for (int i = 0; i < q; i++) {
+        int c;
+        cin >> c;
+        if ( c == 1 ) {
+            ll x;
+            cin >> x;
+            Q.push(x);
+        }
+        else if ( c == 2 ) {
+            ll y;
+            if (PQ.empty()) {
+                y = Q.front();
+                Q.pop();
+            } else {
+                y = PQ.top();
+                PQ.pop();
+            }
+            cout << y << endl;
+        }
+        else {
+            while (!Q.empty()) {
+                ll y = Q.front();
+                Q.pop();
+                PQ.push(y);
+            }
+        }
+    }
+
+    return 0;
+}
+
+
+
+#ifdef D
+
 set<ll> S;
 
 int main()
@@ -49,3 +92,4 @@ int main()
     return 0;
 }
 
+#endif
