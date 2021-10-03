@@ -21,97 +21,54 @@ using namespace std;
 
 using ll = long long;
 
-struct bento {
-    int i;
-    int a;
-    int b;
-};
+const int INF = 10000;
+const int M = 310;
+
+int  dp[M][M][M];  // n, a, b
 
 int main()
 {
     int n, x, y;
     cin >> n >> x >> y;
 
-    int as = 0, bs = 0;
-    vector<bento> A(n);
+    vector<int> A(n), B(n);
     for (int i = 0; i < n; i++) {
         int a, b;
         cin >> a >> b;
-        A[i] = {i, a, b};
-        as += a;
-        bs += b;
+        A[i] = a; B[i] = b;
     }
 
-    if (as < x || bs < y) {
-        cout << -1 << endl;
-        return 0;
-    }
-
-    vector<bento> B = A;
-    sort(A.begin(), A.end(), 
-    [](bento x, bento y) {
-        if (x.a != y.a ) return x.a > y.a;
-        else return x.b > y.b;
-    } );
-    sort(B.begin(), B.end(), 
-    [](bento x, bento y) {
-        if (x.b != y.b) return x.b > y.b;
-        else return x.a > y.a;
-    } );
-
-    int ai = 0, bi = 0;
-    set<int> picked;
-    while (true) {
-        if (x <= 0 && y <= 0) break;
-
-        if (x <= 0) {
-            if (picked.count(B[bi].i)) {
-                bi++;
-            }
-            else {
-                x -= B[bi].a;
-                y -= B[bi].b;
-                picked.insert(B[bi].i);
-                bi++;
-            }
-        }
-        else if (y <= 0) {
-            if (picked.count(A[ai].i)) {
-                ai++;
-            }
-            else {
-                x -= A[ai].a;
-                y -= A[ai].b;
-                picked.insert(A[ai].i);
-                ai++;
-            }
-        }
-        else {
-            if (x > y) {
-                if (picked.count(A[ai].i)) {
-                    ai++;
-                }
-                else {
-                    x -= A[ai].a;
-                    y -= A[ai].b;
-                    picked.insert(A[ai].i);
-                    ai++;
-                }
-            } else {
-                if (picked.count(B[bi].i)) {
-                    bi++;
-                }
-                else {
-                    x -= B[bi].a;
-                    y -= B[bi].b;
-                    picked.insert(B[bi].i);
-                    bi++;
-                }
+    for (int i = 0; i < M; i++) {
+        for (int j = 0; j < M; j++) {
+            for (int k = 0; k < M; k++) {
+                dp[i][j][k] = INF;
             }
         }
     }
 
-    cout << picked.size() << endl;
+    dp[0][0][0] = 0;
+
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j <= A[i]; j++) {
+            for (int k = 0; k <= B[i]; k++) {
+                dp[i+1][j][k] = 1;
+            }
+        }
+
+        for (int j = 0; j <= x; j++) {
+            for (int k = 0; k <= y; k++) {
+                dp[i+1][j][k] = min(dp[i+1][j][k], dp[i][j][k]);
+                dp[i+1][min(x, j+A[i])][min(y, k+B[i])] = min(dp[i+1][min(x, j+A[i])][min(y, k+B[i])], dp[i][j][k] + 1);
+            }
+        }
+    }
+
+    int ans = dp[n][x][y];
+    if (ans == INF) {
+        ans = -1;
+    }
+
+    cout << ans << endl;
 
     return 0;
 }
