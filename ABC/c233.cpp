@@ -21,31 +21,103 @@ using namespace std;
 
 using ll = long long;
 
-int main()
+//------------------------------------------------------------------
+// 2D geometry class
+struct Point 
 {
-    ll n, k;
-    cin >> n >> k;
+    Point() = default;
+    Point(double x0, double y0) : x(x0), y(y0) {}
 
-    vector<ll> sum(n+1);
-    sum[0] = 0;
-    for (ll i = 0; i < n; i++) {
-        ll a;
-        cin >> a;
-        sum[i+1] = sum[i] + a;
+    Point operator+(const Point& q) const { return {x + q.x, y + q.y}; }
+    Point operator-(const Point& q) const { return {x - q.x, y - q.y}; }
+    Point operator*(double a) const { return {a * x, a * y}; }
+
+    Point& operator+=(const Point& q) { x += q.x; y += q.y; return *this; }
+    Point& operator-=(const Point& q) { x -= q.x; y -= q.y; return *this; }
+    Point& operator*=(double a) { x *= a; y *= a; return *this; }
+
+    double sqlen() const {
+        return x * x + y * y;
     }
 
-    ll ans = 0;
-    for (int s = 0; s < n; s++) {
-        auto t = lower_bound(sum.begin() + s, sum.end(), sum[s] + k);
-        if ( t != sum.end()) {
-            auto n = upper_bound(t, sum.end(), sum[s] + k);
-            for (auto i = t; i < n; ++i) {
-                if (*i == sum[s] + k) ans ++;
+    double len() const {
+        return sqrt(sqlen());
+    }
+
+    bool equal(const Point &q, double eps = 1e-10) const {
+        return fabs(x - q.x) < eps && fabs(y - q.y) < eps;
+    }
+
+    Point norm() const {
+        double a = 1./len();
+        return {a*x, a*y};
+    }
+
+    double x;
+    double y;
+};
+
+bool compare_x(const Point &a, const Point &b) {
+    return a.x < b.x || (a.x == b.x && a.y < b.y);
+}
+
+bool compare_y(const Point &a, const Point &b) {
+    return a.y < b.y || (a.y == b.y && a.x < b.x);
+}
+
+typedef Point Vector;
+
+using Polygon = vector<Point>;
+
+double clamp(double x, double min, double max) 
+{
+    if (x < min) return min;
+    if (x > max) return max;
+    return x;
+}
+
+double dot(const Vector& p, const Vector& q) 
+{
+    return p.x * q.x + p.y * q.y;
+}
+
+// outer-product of 2D vectors is scalar
+double cross(const Vector& p, const Vector& q) {
+    return p.x * q.y - p.y * q.x;
+} 
+
+Vector rotate(const Vector& v, double theta)
+{
+    double s = sin(theta);
+    double c = cos(theta);
+    return { v.x * c + v.y * s, -v.x * s + v.y * c };
+}
+
+int main()
+{
+    int n;
+    cin >> n;
+
+    cout << fixed << setprecision(8);
+
+    vector<Point> P(n);
+    for (int i = 0; i < n; i++) {
+        double x, y;
+        cin >> x >> y;
+        P[i] = Point(x, y);
+    }
+
+    double dsqmax = 0;
+    for (int i = 0; i < n; i++) {
+        for (int j = i+1; j < n; j++) {
+            double dsq = (P[i] - P[j]).sqlen();
+            if (dsq > dsqmax) {
+                dsqmax = dsq;
             }
         }
     }
 
-    cout << ans << endl;
+    cout << sqrt(dsqmax) << endl;
 
     return 0;
 }
