@@ -23,39 +23,6 @@ using ll = long long;
 
 int main()
 {
-    ll n;
-    ll k;
-    cin >> n >> k;
-    vector<ll> A(n);
-    vector<ll> An(n);
-
-    for (ll i = 0; i < n; i++) {
-        cin >> A[i];
-        An[i] = A[i] % n;
-    }
-    map<ll, ll> xn;
-    ll x = 0;
-    xn[0]++;
-    for (ll i = 1; i < k; i++) {
-        ll b = x % n;
-        x += An[b];
-        x = x % n;
-        xn[x]++;
-    }
-    ll s = 0;
-    for (auto t : xn) {
-        s += t.second * A[t.first];
-    }
-
-    cout << s << endl;
-
-
-    return 0;
-}
-
-#ifdef D
-int main()
-{
     int q;
     cin >> q;
 
@@ -77,10 +44,11 @@ int main()
             it--;
             vector<ll> Q;
             int count = 0;
-            for (int j = 0; j < 5 && count <= 5; j++) {
+            for (int j = 0; j < 5; j++) {
                 for (int v = 0; v < it->second; v++) {
                     Q.push_back(it->first);
                     count++;
+                    if (count == k) break;
                 }
                 if (it == A.begin()) break;
                 it--;
@@ -97,11 +65,12 @@ int main()
             auto it = A.lower_bound(x);
             vector<ll> Q;
             int count = 0;
-            for (int j = 0; j < 5 && count <= 5; j++) {
+            for (int j = 0; j < 5; j++) {
                 if (it == A.end()) break;
                 for (int v = 0; v < it->second; v++) {
                     Q.push_back(it->first);
                     count++;
+                    if (count == k) break;
                 }
                 it++;
             }
@@ -116,7 +85,6 @@ int main()
 
     return 0;
 }
-#endif
 
 #ifdef C
 
