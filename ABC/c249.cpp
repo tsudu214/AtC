@@ -19,21 +19,55 @@
 
 using namespace std;
 
-using ll = long long; // 9,223,372,036,854,775,807 = 9*10^18
+using ll = long long; // ~ 9*10^18
+
+int main()
+{
+    int n;
+    cin >> n;
+
+    ll M = 0;
+    vector<ll> C(20010, 0);
+    for (int i = 0; i < n; i++) {
+        ll a;
+        cin >> a;
+        C[a]++;
+        if (a > M) M = a;
+    }
+
+    ll ans = 0;
+    for (ll j = 1; j <= M; j++) {
+        for (ll k = 1; k*j <= M; k++) {  
+            ans += C[j*k] * C[j] * C[k];
+        }
+    }
+
+    cout << ans << endl;
+
+    return 0;
+}
+
+
+#ifdef D_1
 
 vector<ll>  A;
 
-vector<long long> divisor(long long n) {
-    vector<long long> ret;
-    for (long long i = 1; i * i <= n; i++) {
-        if (n % i == 0) {
-            ret.push_back(i);
-            if (i * i != n) ret.push_back(n / i);
-        }
-    }
-    return ret;
-}
+vector<long long> divisors(long long N) {
+    vector<long long> res;
+    for (long long i = 1; i * i <= N; ++i) {
+        if (N % i != 0) continue;
 
+        // i ‚Í–ñ”
+        res.push_back(i);
+
+        // N € i ‚à–ñ”‚Å‚ ‚é (d•¡‚É’ˆÓ)
+        if (N / i != i) res.push_back(N / i);
+    }
+
+    // ¬‚³‚¢‡‚É•À‚Ñ‘Ö‚¦‚Äo—Í
+    sort(res.begin(), res.end());
+    return res;
+}
 int main()
 {
     int n;
@@ -45,32 +79,31 @@ int main()
         cin >> a;
         M[a]++;
     }
-
-    for (auto& i : M) {
-        int in = i.second;
-        vector<ll> div = divisor(i.first);
-
-
+    int nn = (int)M.size();
+    vector<ll>  A;
+    vector<int> C;
+    for (auto& m : M) {
+        A.push_back(m.first);
+        C.push_back(m.second);
     }
 
-    int ans = 0;
-    for (int i = 0; i < n; i++) {
-        vector<ll> div = divisor(A[i]);
+    ll ans = 0;
+    for (int i = 0; i < nn; i++) {
+        vector<ll> divs = divisors(A[i]);
 
-        for (int d1 = 0; d1 < div.size(); d1++) {
-            bsearch(div[d1], )
-            ll d2 = A[i] / div[d1];
-        }
-}
-        for (int j = 0; j < n && A[j] <= A[i]; j++ ) {
-            for (int k = 0; k < n && A[k] <= A[j]; k++ ) {
-                if (A[i] == A[k]*A[j]) {
-                    ans += 1;
-                    if (k != j) {
-                        ans ++;
-                    }
-                }
-            }
+        for (auto& div : divs) {
+            auto it = lower_bound(A.begin(), A.end(), div);
+            unsigned int j = distance(A.begin(), it);
+            if (A[j] != div) 
+                continue;
+
+            ll q = A[i] / A[j];
+            auto it2 = lower_bound(A.begin(), A.end(), q);
+            unsigned int k = distance(A.begin(), it2);
+            if (A[k] != q) 
+                continue;
+
+            ans += (ll) C[i] * C[j] * C[k];
         }
     }
 
@@ -78,6 +111,8 @@ int main()
 
     return 0;
 }
+
+#endif
 
 #ifdef C
 
