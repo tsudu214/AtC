@@ -23,28 +23,29 @@ using ll = long long; // ~ 9*10^18
 
 ll M = 998244353;
 
-ll Cnk(ll n, ll k)
-{
-    ll ans = 1;
-    for (ll i = 0; i < k; i++) {
-        ans *= (n - i);
-    }
-    for (ll i = 0; i < k; i++) {
-        ans /= (i + 1);
-    }
-    return ans;
-}
+vector<vector<ll>> dp;
 
 int main()
 {
-    ll n, m, k;
+    int n, m, k;
     cin >> n >> m >> k;
 
-    int ans = 0;
-    while (true) {
-        if (a >= b) break;
-        a *= k;
-        ans++;
+    dp = vector<vector<ll>>(n + 1, vector<ll>(k + 1, 0));
+    for (int kk = 1; kk <= m; kk++) dp[1][kk] = 1;
+
+    for (int nn = 2; nn <= n; nn++) {
+        for (int kk = nn; kk <= k; kk++) {
+            for (int mm = 1; mm <= m && mm < kk; mm++) {
+                dp[nn][kk] += dp[nn - 1][kk - mm];
+                dp[nn][kk] %= M;
+            }
+        }
+    }
+
+    ll ans = 0;
+    for (int kk = n; kk <= k; kk++) {
+        ans += dp[n][kk];
+        ans %= M;
     }
 
     cout << ans << endl;
