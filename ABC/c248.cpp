@@ -21,6 +21,46 @@ using namespace std;
 
 using ll = long long; // ~ 9*10^18
 
+#ifdef D
+
+int main()
+{
+    int n;
+    cin >> n;
+
+    map<int, vector<int>> A;
+    for (int i = 0; i < n; i++) {
+        int a;
+        cin >> a;
+        A[a].push_back(i);
+    }
+
+    int q;
+    cin >> q;
+
+    for (int i = 0; i < q; i++) {
+        int l, r, x;
+        cin >> l >> r >> x;
+
+        l--;
+        int ans = 0;
+        if (A.count(x)) {
+            auto it = lower_bound(A[x].begin(), A[x].end(), l);
+            int iL = it - A[x].begin();
+            it = lower_bound(A[x].begin(), A[x].end(), r);
+            int iR = it - A[x].begin();
+            ans = iR - iL;
+        }
+        cout << ans << endl;
+    }
+
+    return 0;
+}
+
+#endif
+
+#ifdef C
+
 ll M = 998244353;
 
 vector<vector<ll>> dp;
@@ -53,4 +93,5 @@ int main()
     return 0;
 }
 
+#endif
 

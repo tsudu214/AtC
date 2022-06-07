@@ -156,5 +156,8 @@
     <ClCompile Include="c248.cpp">
       <Filter>ソース ファイル\ABC 226-250</Filter>
     </ClCompile>
+    <ClCompile Include="c254.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
