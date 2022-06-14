@@ -21,58 +21,89 @@ using namespace std;
 
 using ll = long long; // ~ 9*10^18
 
-/*  PrimeFact
-    init(N): 初期化。O(N log log N)
-    get(n): クエリ。素因数分解を求める。O(log n)
- */
-template <typename T>
-struct PrimeFact {
-    vector<T> spf;
-    PrimeFact(T N) { init(N); }
-    void init(T N) { // 前処理。spf を求める
-        spf.assign(N + 1, 0);
-        for (T i = 0; i <= N; i++) spf[i] = i;
-        for (T i = 2; i * i <= N; i++) {
-            if (spf[i] == i) {
-                for (T j = i * i; j <= N; j += i) {
-                    if (spf[j] == j) {
-                        spf[j] = i;
-                    }
-                }
-            }
-        }
+int query(vector<vector<int>>& G, int x, int k, vector<vector<int>>& dp)
+{
+    if (dp[x][k] > 0) {
+        return dp[x][k];
     }
-    map<T, T> get(T n) { // nの素因数分解を求める
-        map<T, T> m;
-        while (n != 1) {
-            m[spf[n]]++;
-            n /= spf[n];
-        }
-        return m;
+    int sum = x;
+    for (auto q : G[x]) {
+        int s = query(G, q, k - 1, dp);
+        sum += s;
     }
-};
+    dp[x][k] = sum;
+    return sum;
+}
+
+int main()
+{
+    int n, m;
+    cin >> n >> m;
+
+    vector<vector<int>> G(n + 1);
+    for (int i = 0; i < m; i++) {
+        int a, b;
+        cin >> a >> b;
+        G[a].push_back(b);
+        G[b].push_back(a);
+    }
+
+    vector<vector<int>> dp(n + 1);
+    for (int i = 0; i < n + 1; i++) {
+        dp[i] = { i, 0, 0, 0 };
+    }
+
+    int q;
+    cin >> q;
+    for (int i = 0; i < q; i++) {
+        int x, k;
+        cin >> x >> k;
+        int ans = query(G, x, k, dp);
+        cout << ans << endl;
+    }
+
+    return 0;
+}
+
+
+#ifdef D
 
 int main()
 {
     ll n;
     cin >> n;
 
-    ll ans = 0;
-    for (size_t i = 1; i <= n; i++) {
-        PrimeFact<ll> SPF(i);
-        map<ll, ll> m = SPF.get(i);
-        ll y = 1;
-        for (auto& c : m) {
-            y *= (c.second + 1);
+    vector<ll> x(n);
+    for (ll i = 0; i < n; i++) {
+        x[i] = i+1;
+    }
+
+    for (ll i = 2; i <= n; i++) {
+        ll s = i * i;
+        if (s > n) break;
+
+        for (ll j = s; j <= n; j += s) {
+            while (x[j - 1] % s == 0) {
+                x[j - 1] /= s;
+            }
         }
-        ans += y;
+    }
+
+    vector<ll> cnt(n + 1, 0);
+    for (ll i = 0; i < n; i++) {
+        cnt[x[i]]++;
+    }
+
+    ll ans = 0;
+    for (ll i = 1; i <= n; i++) {
+        ans += cnt[i] * cnt[i];
     }
 
     cout << ans << endl;
 
     return 0;
 }
-
+#endif
 
 #ifdef C
 

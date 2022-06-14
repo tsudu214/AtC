@@ -61,8 +61,8 @@ int main()
     }
 
     int nmax = 0;
-    for (auto& a : a0count) {
-        nmax = max(nmax, a.second);
+    for (const auto& ac : a0count) {
+        nmax = max(nmax, ac.second);
     }
 
     cout << nmax << endl;
