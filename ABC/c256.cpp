@@ -20,76 +20,39 @@
 using namespace std;
 using ll = long long;
 
-struct Person {
-    int id;
-    int dislike;
-    ll  cost;
-};
-
-int main()
-{
-    int n;
-    cin >> n;
-    vector<Person> P(n);
-    for (int i = 0; i < n; i++) {
-        P[i].id = i;
-        cin >> P[i].dislike;
-    }
-    for (int i = 0; i < n; i++) {
-        cin >> P[i].cost;
-    }
-
-    sort(P.begin(), P.end(), [](auto a, auto b) { return a.cost > b.cost; });
-    
-    ll ans = 0;
-
-    cout << ans << endl;
-
-    return 0;
-}
-
-#ifdef D
-
-ll INF = 2e5 + 10;
 
 int main() 
 {
     int n; 
     cin >> n; 
-    set<pair<ll, ll>> st;
 
-    st.insert(make_pair(-INF, -INF));
-    st.insert(make_pair(INF, INF));
+    vector<pair<ll, ll>> vRange;
     for (int i = 0; i < n; i++) {
-        ll x, y; 
-        cin >> x >> y;; 
-
-        auto it = st.lower_bound(make_pair(x, y)); it--;
-
-        if (it->first <= x && x <= it->second) {
-            x = min(x, it->first); 
-            y = max(y, it->second);
-            st.erase(it);
-        }
-
-        it = st.lower_bound(make_pair(x, y));
-        while (1) { 
-            if (x <= it->first && it->first <= y) {
-                y = max(y, it->second);
-                it = st.erase(it); 
-            }
-            else break;
-        }
-        st.insert(make_pair(x, y));
+        ll x, y;
+        cin >> x >> y;;
+        vRange.push_back(make_pair(x, y));
     }
 
-    for (auto& r : st) {
-        if (r.first == INF || r.first == -INF) continue;
+    sort(vRange.begin(), vRange.end());
+
+    vector<pair<ll, ll>> vAns;
+    pair<ll, ll>  curr = *vRange.begin();
+    for (int i = 1; i < n; i++) {
+        if (curr.second < vRange[i].first) {
+            vAns.push_back(curr);
+            curr = vRange[i];
+        }
+        else {
+            curr.second = max(curr.second, vRange[i].second);
+        }
+    }
+    vAns.push_back(curr);
+
+    for (auto& r : vAns) {
         cout << r.first << " " << r.second << endl;
     }
 }
 
-#endif
 
 #ifdef C
 
