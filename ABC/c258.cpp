@@ -22,28 +22,77 @@ using ll = long long;
 
 int main()
 {
+    int n;
+    ll x;
+    cin >> n >> x;
+
+    ll INF = 1LL << 60;
+
+    vector<ll> a(n);
+    vector<ll> b(n);
+    for (int i = 0; i < n; i++) {
+        cin >> a[i];
+        cin >> b[i];
+    }
+
+    vector<ll> T(n, INF);
+    vector<ll> D(n);
+    D[0] = a[0] + b[0];
+    for (int i = 1; i < n; i++) {
+        D[i] = D[i - 1] + a[i] + b[i];
+    }
+
+    vector<ll> m(n, INF);
+    m[0] = b[0];
+    for (int i = 1; i < n; i++) {
+        m[i] = min(m[i - 1], b[i]);
+    }
+
+    ll ans = INF;
+    if (x < n) {
+        for (int i = 0; i < x; i++) {
+            T[i] = D[i] + (x - 1 - i) * m[i];
+            ans = min(ans, T[i]);
+        }
+    }
+    else {
+        for (int i = 0; i < n; i++) {
+            T[i] = D[i] + (n - 1 - i) * m[i];
+            ans = min(ans, T[i] + (x - n) * m[i]);
+        }
+    }
+    cout << ans << endl;
+
+    return 0;
+}
+
+
+#ifdef C
+
+int main()
+{
     int n, q;
     cin >> n >> q;
 
     string s;
     cin >> s;
+    int start = 0;
 
     for (int i = 0; i < q; i++) {
         int op, x;
         cin >> op >> x;
         if (op == 1) {
-            string sub1 = s.substr(0, n - x);
-            string sub2 = s.substr(n - x, x);
-            reverse(sub2.begin(), sub2.end());
-            s = sub2 + sub1;
+            start = (start - x + n)%n;
         }
         else {
-            cout << s[x-1] << endl;
+            cout << s[(start + x - 1)%n] << endl;
         }
     }
 
     return 0;
 }
+
+#endif
 
 #ifdef B
 
