@@ -21,6 +21,8 @@ using namespace std;
 
 using ll = long long; // ~ 9*10^18
 
+#define B
+
 #ifdef B
 
 string rotate(string& s, int n)
@@ -33,7 +35,6 @@ string rotate(string& s, int n)
     }
     return next;
 }
-
 
 int main()
 {

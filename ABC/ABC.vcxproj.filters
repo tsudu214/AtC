@@ -13,175 +13,151 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="ソース ファイル\ABC 226-250">
-      <UniqueIdentifier>{1b7e199b-3de2-4500-8406-84c9454ff987}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ソース ファイル\ABC 201-225">
+    <Filter Include="ソース ファイル\ABC 201-300">
       <UniqueIdentifier>{5cd349f8-87de-4325-911e-aace57d553f1}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="swelcome.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="s086a.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="s081a.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="s081b.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="s087b.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="s083b.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="c251.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="c252.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="c207.cpp">
-      <Filter>ソース ファイル\ABC 201-225</Filter>
+      <Filter>ソース ファイル\ABC 201-300</Filter>
     </ClCompile>
     <ClCompile Include="c208.cpp">
-      <Filter>ソース ファイル\ABC 201-225</Filter>
+      <Filter>ソース ファイル\ABC 201-300</Filter>
     </ClCompile>
     <ClCompile Include="c209.cpp">
-      <Filter>ソース ファイル\ABC 201-225</Filter>
+      <Filter>ソース ファイル\ABC 201-300</Filter>
     </ClCompile>
     <ClCompile Include="c210.cpp">
-      <Filter>ソース ファイル\ABC 201-225</Filter>
+      <Filter>ソース ファイル\ABC 201-300</Filter>
     </ClCompile>
     <ClCompile Include="c211.cpp">
-      <Filter>ソース ファイル\ABC 201-225</Filter>
+      <Filter>ソース ファイル\ABC 201-300</Filter>
     </ClCompile>
     <ClCompile Include="c212.cpp">
-      <Filter>ソース ファイル\ABC 201-225</Filter>
+      <Filter>ソース ファイル\ABC 201-300</Filter>
     </ClCompile>
     <ClCompile Include="c213.cpp">
-      <Filter>ソース ファイル\ABC 201-225</Filter>
+      <Filter>ソース ファイル\ABC 201-300</Filter>
     </ClCompile>
     <ClCompile Include="c214.cpp">
-      <Filter>ソース ファイル\ABC 201-225</Filter>
+      <Filter>ソース ファイル\ABC 201-300</Filter>
     </ClCompile>
     <ClCompile Include="c215.cpp">
-      <Filter>ソース ファイル\ABC 201-225</Filter>
+      <Filter>ソース ファイル\ABC 201-300</Filter>
     </ClCompile>
     <ClCompile Include="c216.cpp">
-      <Filter>ソース ファイル\ABC 201-225</Filter>
+      <Filter>ソース ファイル\ABC 201-300</Filter>
     </ClCompile>
     <ClCompile Include="c217.cpp">
-      <Filter>ソース ファイル\ABC 201-225</Filter>
+      <Filter>ソース ファイル\ABC 201-300</Filter>
     </ClCompile>
     <ClCompile Include="c218.cpp">
-      <Filter>ソース ファイル\ABC 201-225</Filter>
+      <Filter>ソース ファイル\ABC 201-300</Filter>
     </ClCompile>
     <ClCompile Include="c219.cpp">
-      <Filter>ソース ファイル\ABC 201-225</Filter>
+      <Filter>ソース ファイル\ABC 201-300</Filter>
     </ClCompile>
     <ClCompile Include="c220.cpp">
-      <Filter>ソース ファイル\ABC 201-225</Filter>
+      <Filter>ソース ファイル\ABC 201-300</Filter>
     </ClCompile>
     <ClCompile Include="c221.cpp">
-      <Filter>ソース ファイル\ABC 201-225</Filter>
+      <Filter>ソース ファイル\ABC 201-300</Filter>
     </ClCompile>
     <ClCompile Include="c222.cpp">
-      <Filter>ソース ファイル\ABC 201-225</Filter>
+      <Filter>ソース ファイル\ABC 201-300</Filter>
     </ClCompile>
     <ClCompile Include="c223.cpp">
-      <Filter>ソース ファイル\ABC 201-225</Filter>
+      <Filter>ソース ファイル\ABC 201-300</Filter>
     </ClCompile>
     <ClCompile Include="c224.cpp">
-      <Filter>ソース ファイル\ABC 201-225</Filter>
+      <Filter>ソース ファイル\ABC 201-300</Filter>
     </ClCompile>
     <ClCompile Include="c225.cpp">
-      <Filter>ソース ファイル\ABC 201-225</Filter>
-    </ClCompile>
-    <ClCompile Include="c226.cpp">
-      <Filter>ソース ファイル\ABC 226-250</Filter>
-    </ClCompile>
-    <ClCompile Include="c227.cpp">
-      <Filter>ソース ファイル\ABC 226-250</Filter>
-    </ClCompile>
-    <ClCompile Include="c228.cpp">
-      <Filter>ソース ファイル\ABC 226-250</Filter>
-    </ClCompile>
-    <ClCompile Include="c229.cpp">
-      <Filter>ソース ファイル\ABC 226-250</Filter>
-    </ClCompile>
-    <ClCompile Include="c231.cpp">
-      <Filter>ソース ファイル\ABC 226-250</Filter>
-    </ClCompile>
-    <ClCompile Include="c232.cpp">
-      <Filter>ソース ファイル\ABC 226-250</Filter>
-    </ClCompile>
-    <ClCompile Include="c233.cpp">
-      <Filter>ソース ファイル\ABC 226-250</Filter>
-    </ClCompile>
-    <ClCompile Include="c234.cpp">
-      <Filter>ソース ファイル\ABC 226-250</Filter>
-    </ClCompile>
-    <ClCompile Include="c237.cpp">
-      <Filter>ソース ファイル\ABC 226-250</Filter>
-    </ClCompile>
-    <ClCompile Include="c238.cpp">
-      <Filter>ソース ファイル\ABC 226-250</Filter>
-    </ClCompile>
-    <ClCompile Include="c239.cpp">
-      <Filter>ソース ファイル\ABC 226-250</Filter>
-    </ClCompile>
-    <ClCompile Include="c241.cpp">
-      <Filter>ソース ファイル\ABC 226-250</Filter>
-    </ClCompile>
-    <ClCompile Include="c242.cpp">
-      <Filter>ソース ファイル\ABC 226-250</Filter>
-    </ClCompile>
-    <ClCompile Include="c243.cpp">
-      <Filter>ソース ファイル\ABC 226-250</Filter>
-    </ClCompile>
-    <ClCompile Include="c249.cpp">
-      <Filter>ソース ファイル\ABC 226-250</Filter>
-    </ClCompile>
-    <ClCompile Include="c250.cpp">
-      <Filter>ソース ファイル\ABC 226-250</Filter>
-    </ClCompile>
-    <ClCompile Include="c248.cpp">
-      <Filter>ソース ファイル\ABC 226-250</Filter>
-    </ClCompile>
-    <ClCompile Include="c254.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="c255.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="c256.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="c257.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="c258.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="c260.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="c253.cpp">
-      <Filter>ソース ファイル</Filter>
+      <Filter>ソース ファイル\ABC 201-300</Filter>
     </ClCompile>
     <ClCompile Include="c404.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
+    <ClCompile Include="c226.cpp">
+      <Filter>ソース ファイル\ABC 201-300</Filter>
+    </ClCompile>
+    <ClCompile Include="c227.cpp">
+      <Filter>ソース ファイル\ABC 201-300</Filter>
+    </ClCompile>
+    <ClCompile Include="c228.cpp">
+      <Filter>ソース ファイル\ABC 201-300</Filter>
+    </ClCompile>
+    <ClCompile Include="c229.cpp">
+      <Filter>ソース ファイル\ABC 201-300</Filter>
+    </ClCompile>
+    <ClCompile Include="c231.cpp">
+      <Filter>ソース ファイル\ABC 201-300</Filter>
+    </ClCompile>
+    <ClCompile Include="c232.cpp">
+      <Filter>ソース ファイル\ABC 201-300</Filter>
+    </ClCompile>
+    <ClCompile Include="c233.cpp">
+      <Filter>ソース ファイル\ABC 201-300</Filter>
+    </ClCompile>
+    <ClCompile Include="c234.cpp">
+      <Filter>ソース ファイル\ABC 201-300</Filter>
+    </ClCompile>
+    <ClCompile Include="c237.cpp">
+      <Filter>ソース ファイル\ABC 201-300</Filter>
+    </ClCompile>
+    <ClCompile Include="c238.cpp">
+      <Filter>ソース ファイル\ABC 201-300</Filter>
+    </ClCompile>
+    <ClCompile Include="c239.cpp">
+      <Filter>ソース ファイル\ABC 201-300</Filter>
+    </ClCompile>
+    <ClCompile Include="c241.cpp">
+      <Filter>ソース ファイル\ABC 201-300</Filter>
+    </ClCompile>
+    <ClCompile Include="c242.cpp">
+      <Filter>ソース ファイル\ABC 201-300</Filter>
+    </ClCompile>
+    <ClCompile Include="c243.cpp">
+      <Filter>ソース ファイル\ABC 201-300</Filter>
+    </ClCompile>
+    <ClCompile Include="c248.cpp">
+      <Filter>ソース ファイル\ABC 201-300</Filter>
+    </ClCompile>
+    <ClCompile Include="c249.cpp">
+      <Filter>ソース ファイル\ABC 201-300</Filter>
+    </ClCompile>
+    <ClCompile Include="c250.cpp">
+      <Filter>ソース ファイル\ABC 201-300</Filter>
+    </ClCompile>
+    <ClCompile Include="c251.cpp">
+      <Filter>ソース ファイル\ABC 201-300</Filter>
+    </ClCompile>
+    <ClCompile Include="c252.cpp">
+      <Filter>ソース ファイル\ABC 201-300</Filter>
+    </ClCompile>
+    <ClCompile Include="c253.cpp">
+      <Filter>ソース ファイル\ABC 201-300</Filter>
+    </ClCompile>
+    <ClCompile Include="c254.cpp">
+      <Filter>ソース ファイル\ABC 201-300</Filter>
+    </ClCompile>
+    <ClCompile Include="c255.cpp">
+      <Filter>ソース ファイル\ABC 201-300</Filter>
+    </ClCompile>
+    <ClCompile Include="c256.cpp">
+      <Filter>ソース ファイル\ABC 201-300</Filter>
+    </ClCompile>
+    <ClCompile Include="c257.cpp">
+      <Filter>ソース ファイル\ABC 201-300</Filter>
+    </ClCompile>
+    <ClCompile Include="c258.cpp">
+      <Filter>ソース ファイル\ABC 201-300</Filter>
+    </ClCompile>
+    <ClCompile Include="c260.cpp">
+      <Filter>ソース ファイル\ABC 201-300</Filter>
+    </ClCompile>
     <ClCompile Include="c261.cpp">
-      <Filter>ソース ファイル</Filter>
+      <Filter>ソース ファイル\ABC 201-300</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
