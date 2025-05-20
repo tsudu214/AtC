@@ -23,8 +23,257 @@ using namespace std;
 
 using ll = long long; // ~ 9*10^18
 
+
+
+#ifdef _399_D
+
+int64_t hash_pair(int x, int y) {
+    return (static_cast<int64_t>(x) << 32) | y;
+}
+
+int main()
+{
+    int t;
+    cin >> t;
+
+    for (int q = 0; q < t; q++) {
+        int n;
+        cin >> n;
+        vector<int> a(2 * n);
+        for (int i = 0; i < 2 * n; i++) {
+            cin >> a[i];
+        }
+
+        int ans = 0;
+        map<int64_t, int> store;
+        for (int i = 0; i < 2 * n - 1; i++) {
+            int p = a[i];
+            int q = a[i + 1];
+            if (p > q) swap(p, q);
+            int64_t h = hash_pair(p, q);
+            if (store.count(h) == 0) {
+                store[h] = i;
+            }
+            else {
+                int prev = store[h];
+                if (i > 0 && prev == i - 1) continue;
+                if (i > 1 && prev == i - 2 && a[i - 1] == a[i]) continue;
+                ans++;
+            }
+        }
+
+        cout << ans << '\n';
+    }
+
+
+    return 0;
+}
+#endif
+
+#ifdef _399_C
+
+class UnionFind {
+    vector<int> parent;
+
+public:
+    UnionFind(int n) {
+        parent.resize(n, -1);
+    }
+
+    int find(int x) {
+        if (parent[x] < 0) return x;
+        return parent[x] = find(parent[x]); // Œo˜Hˆ³k
+    }
+
+    bool unite(int x, int y) {
+        x = find(x);
+        y = find(y);
+        if (x == y) return false; // “¯‚¶ƒOƒ‹[ƒv ¨ •Â˜H‚ª‚ ‚é
+        if (parent[x] > parent[y]) swap(x, y);
+        parent[x] += parent[y];
+        parent[y] = x;
+        return true;
+    }
+};
+
+
+int main()
+{
+    int n, m;
+    cin >> n >> m;
+
+    vector<int[2]> e(m);
+    for (int i = 0; i < m; i++) {
+        cin >> e[i][0] >> e[i][1];
+        e[i][0]--; e[i][1]--;
+    }
+
+    UnionFind uf(n);
+
+    int cnt = 0;
+    for (int i = 0; i < m; i++) {
+        if (!uf.unite(e[i][0], e[i][1])) {
+            cnt++;
+        }
+    }
+
+    cout << cnt << '\n';
+
+    return 0;
+}
+
+#endif
+
+#ifdef _400_C
+
+int main()
+{
+    ll n;
+    cin >> n;
+
+    vector<ll> p;
+    p.push_back(1);
+
+    while (true) {
+        p.emplace_back(2 * p.back());
+        if (p.back() > n) break;
+    }
+    ll A = p.size() - 2;
+
+    ll B = 1;
+    while (true) {
+        if (2 * B * B > n) break;
+        B++;
+    }
+
+    ll sum = 0;
+    for (ll a = 1; a <= A; a++) {
+        ll r = B;
+        ll l = 1;
+        while (r - l > 1) {
+            ll m = (l + r) / 2;
+            if (m * m <= n / p[a])   // NG!! p[a] * m * m <= n   << p[a]‚ª‘å‚«‚¢‚Æ‚«–³—
+                l = m;
+            else
+                r = m;
+        }
+        sum += (l + 1) / 2;
+    }
+
+    cout << sum << '\n';
+
+    return 0;
+}
+#endif
+
+#ifdef _400_D
+
+int m[1009][1009];
+
+void walk(vector<string>& S, int h, int w, int a, int b, int step, set<tuple<int,int,int>>& wall)
+{
+    int next[4][2] = { {a - 1, b}, {a + 1, b}, {a, b - 1}, {a, b + 1} };
+    for (int k = 0; k < 4; k++) {
+        int aa = next[k][0];
+        int bb = next[k][1];
+        if ( aa >= 0 && aa < h && bb >= 0 && bb < w && m[aa][bb] == -1) {
+            if (S[aa][bb] == '.') {
+                m[aa][bb] = step;
+                walk(S, h, w, aa, bb, step, wall);
+            }
+            else {
+                wall.insert(make_tuple(a, b, k));
+            }
+        }
+    }
+}
+
+void kick(vector<string>& S, int h, int w, tuple<int, int, int> wall, int step, set<pair<int, int>>& knext)
+{
+    int a = get<0>(wall);
+    int b = get<1>(wall);
+    int k = get<2>(wall);
+    int next[4][2] = { {a - 1, b}, {a + 1, b}, {a, b - 1}, {a, b + 1} };
+    int next2[4][2] = { {a - 2, b}, {a + 2, b}, {a, b - 2}, {a, b + 2} };
+
+    int aa = next[k][0];
+    int bb = next[k][1];
+    if (aa >= 0 && aa < h && bb >= 0 && bb < w && m[aa][bb] == -1) {
+        if (S[aa][bb] == '#') {
+            S[aa][bb] = '.';
+            m[aa][bb] = step;
+            knext.insert(make_pair(aa, bb));
+        }
+    }
+    aa = next2[k][0];
+    bb = next2[k][1];
+    if (aa >= 0 && aa < h && bb >= 0 && bb < w && m[aa][bb] == -1) {
+        if (S[aa][bb] == '#') {
+            S[aa][bb] = '.';
+            m[aa][bb] = step;
+            knext.insert(make_pair(aa, bb));
+        }
+    }
+}
+
+int main()
+{
+    int h, w;
+    cin >> h >> w;
+
+    vector<string> S(h);
+    for (int i = 0; i < h; i++) {
+        cin >> S[i];
+    }
+
+    int a, b, c, d;
+    cin >> a >> b >> c >> d;
+    a--; b--; c--; d--;
+
+    for (int i = 0; i < h; i++) {
+        for (int j = 0; j < w; j++) {
+            m[i][j] = -1;
+        }
+    }
+
+    m[a][b] = 0;
+    int step = 0;
+    set<tuple<int, int, int>> n0;
+    set<pair<int, int>> n1;
+    n1.insert(make_pair(a, b));
+
+    while (true) {
+        for (auto& nn : n1) {
+            walk(S, h, w, nn.first, nn.second, step, n0);
+        }
+        n1.clear();
+        if (m[c][d] >= 0) {
+            cout << m[c][d] << '\n';
+            return 0;
+        }
+
+        step++;
+        for (auto& nn : n0) {
+            kick(S, h, w, nn, step, n1);
+        }
+        n0.clear();
+        if (m[c][d] >= 0) {
+            cout << m[c][d] << '\n';
+            return 0;
+        }
+    }
+
+    return 0;
+}
+
+#endif
+
+
+
+#if _401_D
+
 vector<pair<char, int>> runLength(const std::string& input) {
-    int n = input.length();
+    int n = (int)input.length();
     vector<pair<char, int>> encode;
     for (int i = 0; i < n; ) {
         char current = input[i];
@@ -41,7 +290,7 @@ vector<pair<char, int>> runLength(const std::string& input) {
 string decode(const vector<pair<char, int>>& s)
 {
     string out;
-    int n = s.size();
+    int n = (int)s.size();
     for (int i = 0; i < n; i++) {
         for (int k = 0; k < s[i].second; k++) {
             out.push_back(s[i].first);
@@ -164,6 +413,8 @@ int main()
 
     return 0;
 }
+
+#endif
 
 
 #ifdef _401_C
