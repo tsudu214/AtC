@@ -23,7 +23,202 @@ using namespace std;
 
 using ll = long long; // ~ 9*10^18
 
+int main()
+{
+    ll n;
+    cin >> n;
 
+    ll y = 1;
+    vector<ll> py; py.push_back(1);
+    for (int i = 1; i < 60; i++) {
+        y *= 2;
+        py.push_back(y*y*y);
+        if (y * y * y >= n) break;
+    }
+
+    vector<int> a(n);
+    for (int i = 0; i < n; i++) {
+        cin >> a[i];
+    }
+
+    set<int> a1, a2;
+    vector<int> n1(n, 0), n2(n, 0);
+    for (int i = 0; i < n; i++) {
+        a1.insert(a[i]);
+        n1[i] = a1.size();
+    }
+    for (int i = n - 1; i >= 0; i--) {
+        a2.insert(a[i]);
+        n2[i] = a2.size();
+    }
+
+    int M = 0;
+    for (int i = 0; i < n - 1; i++) {
+        int m = n1[i] + n2[i + 1];
+        M = max(M, m);
+    }
+
+    cout << M << endl;
+
+    return 0;
+}
+
+#ifdef _397_C
+int main()
+{
+    int n;
+    cin >> n;
+
+    vector<int> a(n);
+    for (int i = 0; i < n; i++) {
+        cin >> a[i];
+    }
+
+    set<int> a1, a2;
+    vector<int> n1(n, 0), n2(n, 0);
+    for (int i = 0; i < n; i++) {
+        a1.insert(a[i]);
+        n1[i] = a1.size();
+    }
+    for (int i = n-1; i >= 0; i--) {
+        a2.insert(a[i]);
+        n2[i] = a2.size();
+    }
+
+    int M = 0;
+    for (int i = 0; i < n-1; i++) {
+        int m = n1[i] + n2[i+1];
+        M = max(M, m);
+    }
+
+    cout << M << endl;
+
+    return 0;
+}
+#endif
+
+#ifdef _398_D
+
+int main()
+{
+    int n;
+    cin >> n;
+    int r, c;
+    cin >> r >> c;
+    string s;
+    cin >> s;
+
+    int f[2] = { 0, 0 };
+    int taka[2] = { r, c };
+    using P = pair<int, int>;
+
+    set<P> kemu;
+    kemu.insert(P{ f[0], f[1] });
+    for (int i = 0; i < n; i++) {
+        if (s[i] == 'N') {
+            f[0]++; taka[0]++;
+        }
+        if (s[i] == 'S') {
+            f[0]--; taka[0]--;
+        }
+        if (s[i] == 'E') {
+            f[1]--; taka[1]--;
+        }
+        if (s[i] == 'W') {
+            f[1]++; taka[1]++;
+        }
+        kemu.insert(P{ f[0], f[1] });
+
+        if (kemu.count(P{ taka[0], taka[1] })) {
+            cout << "1";
+        }
+        else {
+            cout << "0";
+        }
+    }
+
+    cout << endl;
+
+    return 0;
+}
+
+#endif
+
+#ifdef _398_E
+
+void dfs(vector<vector<int>>& G, int s, int color, vector<int>& bw, vector<bool>& visited)
+{
+    if (visited[s]) return;
+    visited[s] = true;
+    bw[s] = color;
+    color = 1 - color;
+    for (int v = 0; v < G[s].size(); v++) {
+        dfs(G, G[s][v], color, bw, visited);
+    }
+    return;
+}
+
+int main()
+{
+    int n;
+    cin >> n;
+
+    vector<vector<int>> G(n);
+
+    for (int i = 0; i < n-1; i++) {
+        int u, v;
+        cin >> u >> v;
+        u--; v--;
+        G[u].push_back(v);
+        G[v].push_back(u);
+    }
+
+    vector<int> bw(n);
+    vector<bool> visited(n, false);
+
+    dfs(G, 0, 0, bw, visited);
+
+    set<pair<int, int>> safe;
+    for (int i = 0; i < n-1; i++) {
+        for (int j = i + 1; j < n; j++) {
+            if (bw[i] != bw[j]) {
+                if (find(G[i].begin(), G[i].end(), j) == G[i].end()) {
+                    safe.insert(make_pair(i, j));
+                }
+            }
+        }
+    }
+
+    if (safe.size() % 2 == 1) {
+        cout << "First" << '\n';
+        auto it = safe.begin();
+        cout << it->first+1 << " " << it->second+1 << '\n';
+        safe.erase(it);
+    }
+    else {
+        cout << "Second" << '\n';
+    }
+
+    while (true) {
+        int u, v;
+        cin >> u >> v;
+        if (u < 0 && v < 0) return 0;
+        u--; v--;
+        if (u > v) swap(u, v);
+        pair<int, int> p = make_pair(u, v);
+        auto itr = safe.find(p);
+        if (itr != safe.end()) {
+            safe.erase(itr);
+        }
+        auto it = safe.begin();
+        cout << it->first + 1 << " " << it->second + 1 << '\n';
+        safe.erase(it);
+    }
+
+    return 0;
+}
+
+#endif
 
 #ifdef _399_D
 
