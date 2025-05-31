@@ -23,42 +23,67 @@ using namespace std;
 
 using ll = long long; // ~ 9*10^18
 
+int dp0[200009];
+int dp1[200009];
+int dp10[200009];
+
 int main()
 {
-    ll n;
-    cin >> n;
+    int t;
+    cin >> t;
 
-    ll y = 1;
-    vector<ll> py; py.push_back(1);
-    for (int i = 1; i < 60; i++) {
-        y *= 2;
-        py.push_back(y*y*y);
-        if (y * y * y >= n) break;
-    }
+    for (int q = 0; q < t; q++) {
+        int n;
+        string s;
+        cin >> n >> s;
 
-    vector<int> a(n);
-    for (int i = 0; i < n; i++) {
-        cin >> a[i];
-    }
+        vector<char> val;
+        vector<int> an;
+        char last = s[0];
+        an.push_back(1);
+        val.push_back(last);
+        for (int i = 1; i < n; i++) {
+            if (s[i] == last) {
+                an.back()++;
+            }
+            else {
+                an.push_back(1);
+                val.push_back(s[i]);
+                last = s[i];
+            }
+        }
+        int m = an.size();
+        if (m <= 2) {
+            cout << 0 << endl;
+            continue;
+        }
 
-    set<int> a1, a2;
-    vector<int> n1(n, 0), n2(n, 0);
-    for (int i = 0; i < n; i++) {
-        a1.insert(a[i]);
-        n1[i] = a1.size();
-    }
-    for (int i = n - 1; i >= 0; i--) {
-        a2.insert(a[i]);
-        n2[i] = a2.size();
-    }
+        if (val[0] == '0') {
+            dp0[0] = 0;
+            dp1[0] = an[0];
+            dp10[0] = 0;
+        }
+        else {
+            dp0[0] = an[0];
+            dp1[0] = 0;
+            dp10[0] = 0;
+        }
 
-    int M = 0;
-    for (int i = 0; i < n - 1; i++) {
-        int m = n1[i] + n2[i + 1];
-        M = max(M, m);
-    }
+        for (int i = 1; i < m; i++) {
+            if (val[i] == '0') {
+                dp0[i] = dp0[i - 1];
+                dp1[i] = dp1[i-1] + an[i];
+                dp10[i] = dp1[i - 1];
+            }
+            else {
+                dp0[i] = min(dp0[i - 1] + an[i], dp1[i-1] + an[i]);
+                dp1[i] = min(dp0[i - 1], dp1[i-1]);
+                dp10[i] = dp1[i-1] + an[i];
+            }
+        }
 
-    cout << M << endl;
+        cout << min(min(dp0[m-1], dp1[m-1]), dp10[m-1]) << endl;
+    }
 
     return 0;
 }
