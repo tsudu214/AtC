@@ -23,6 +23,313 @@ using namespace std;
 
 using ll = long long; // ~ 9*10^18
 
+int main()
+{
+    int n, m;
+    cin >> n >> m;
+
+
+    for (int i = 0; i < m; i++) {
+        int a, b;
+        ll w;
+        cin >> a >> b >> w;
+        a--; b--;
+        G[a].emplace_back(make_pair(b, w));
+        G[b].emplace_back(make_pair(a, w));
+    }
+
+    vector<ll> path;
+    set<int> visited;
+
+    ll ans = (1LL << 63) - 1;
+    visited.insert(0);
+    dfs(G, 0, path, visited, ans);
+
+    cout << ans << endl;
+
+    return 0;
+}
+
+
+#ifdef _396_D
+
+using Graph = vector<vector<pair<int, ll>>>;
+
+void dfs(Graph& G, int s, vector<ll>& path, set<int>& visited, ll& ans)
+{
+    for (auto e : G[s]) {
+        if (e.first == G.size() - 1) {
+            ll result = 0;
+            for (int i = 0; i < path.size(); ++i) {
+                result ^= path[i];
+            }
+            result ^= e.second;
+            ans = min(ans, result);
+        }
+        else {
+            if (visited.count(e.first)) continue;
+            visited.insert(e.first);
+            path.push_back(e.second);
+            dfs(G, e.first, path, visited, ans);
+            path.pop_back();
+            visited.erase(e.first);
+        }
+    }
+}
+
+int main()
+{
+    int n, m;
+    cin >> n >> m;
+
+
+    Graph G(n);
+    for (int i = 0; i < m; i++) {
+        int a, b;
+        ll w;
+        cin >> a >> b >> w;
+        a--; b--;
+        G[a].emplace_back(make_pair(b, w));
+        G[b].emplace_back(make_pair(a, w));
+    }
+
+    vector<ll> path;
+    set<int> visited;
+
+    ll ans = (1LL << 63) - 1;
+    visited.insert(0);
+    dfs(G, 0, path, visited, ans);
+
+    cout << ans << endl;
+
+    return 0;
+}
+
+#endif
+
+#ifdef _396_C
+
+int main()
+{
+    int n, m;
+    cin >> n >> m;
+
+    vector<ll> b(n), w(m);
+    for (int i = 0; i < n; i++) {
+        cin >> b[i];
+    }
+    for (int i = 0; i < m; i++) {
+        cin >> w[i];
+    }
+    sort(b.begin(), b.end(), greater<ll>());
+    sort(w.begin(), w.end(), greater<ll>());
+
+    for (int i = 1; i < n; i++) {
+        b[i] += b[i-1];
+    }
+    if (w[0] < 0) w[0] = 0;
+    for (int i = 1; i < m; i++) {
+        w[i] = max(w[i - 1], w[i-1] + w[i]);
+    }
+
+    ll ans = 0;
+    for (int i = 0; i < n; i++) {
+        if (i < m) {
+            ans = max(ans, b[i] + w[i]);
+        }
+        else {
+            ans = max(ans, b[i] + w[m-1]);
+        }
+    }
+
+    cout << ans << endl;
+
+    return 0;
+}
+
+#endif
+
+
+#ifdef _407_E
+
+ll a[400009];
+ll b[200009];
+
+int main()
+{
+    ll t;
+    cin >> t;
+
+    for (ll q = 0; q < t; q++) {
+        ll n;
+        cin >> n;
+        for (ll i = 0; i < n * 2; i++) {
+            cin >> a[i];
+        }
+
+        ll bs = 0;
+        ll bn = 1;
+        ll bi = 0;
+        ll bimax = 0;
+        b[0] = 0;
+        for (ll i = 0; i < n * 2; i++) {
+            if (b[bs] < a[i]) {
+                b[bs] = a[i];
+                bimax = i;
+            }
+            b[bs] = max(b[bs], a[i]);
+            bi++;
+            if (bi == bn) {
+                i = bimax + 1;
+                bn++;
+                bi = 0;
+                b[bs] = 0;
+            }
+            if (bs == n) {
+                break;
+            }
+        }
+
+        ll sum = 0;
+        for (ll i = 0; i < n; i++) {
+            sum += b[i];
+        }
+
+        cout << sum << endl;
+    }
+
+    return 0;
+}
+
+#endif
+
+#ifdef _405_D
+
+int main()
+{
+    int h, w;
+    cin >> h >> w;
+
+    struct cell {
+        int i;
+        int j;
+        int d;
+    };
+    queue<cell> Q;
+
+    vector<string> s(h);
+    const int INF = 1e9;
+    vector<vector<int>> d(h, vector<int>(w, INF));
+
+    for (int i = 0; i < h; i++) {
+        for (int j = 0; j < w; j++) {
+            char c;
+            cin >> c;
+            s[i].push_back(c);
+            if (c == 'E') {
+                d[i][j] = 0;
+                Q.push(cell{ i, j, 0 });
+            }
+            if (c == '.') {
+                d[i][j] = -1;
+            }
+        }
+    }
+
+    int dx[4] = { 1, 0, -1, 0 };
+    int dy[4] = { 0, 1, 0, -1 };
+
+    while (!Q.empty()) {
+        auto q = Q.front();
+        Q.pop();
+        for (int k = 0; k < 4; k++) {
+            int ii = q.i + dx[k];
+            int jj = q.j + dy[k];
+            int dd = q.d + 1;
+            if (0 <= ii && ii < h && 0 <= jj && jj < w && d[ii][jj] == -1) {
+                d[ii][jj] = dd;
+                Q.push(cell{ ii, jj, dd });
+            }
+        }
+    }
+
+    char dir[4] = { 'v', '>', '^', '<' };
+    for (int i = 0; i < h; i++) {
+        for (int j = 0; j < w; j++) {
+            if (s[i][j] == '.') {
+                for (int k = 0; k < 4; k++) {
+                    int ii = i + dx[k];
+                    int jj = j + dy[k];
+                    int dd = d[i][j] - 1;
+                    if (0 <= ii && ii < h && 0 <= jj && jj < w && d[ii][jj] == dd) {
+                        s[i][j] = dir[k];
+                    }
+                }
+            }
+        }
+    }
+
+    for (int i = 0; i < h; i++) {
+        cout << s[i] << endl;
+    }
+
+    return 0;
+}
+
+#endif
+
+#ifdef _405_C
+
+int main()
+{
+    ll n;
+    cin >> n;
+
+    vector<ll> A(n);
+    for (ll i = 0; i < n; i++) {
+        cin >> A[i];
+    }
+    vector<ll> B(n);
+    B[0] = A[0];
+    for (ll i = 1; i < n; i++) {
+        B[i] = B[i-1]+A[i];
+    }
+
+    ll sum = 0;
+    for (ll i = n - 1; i >= 1; i--) {
+        sum += A[i] * B[i - 1];
+    }
+    cout << sum << endl;
+
+    return 0;
+}
+
+#endif
+
+#ifdef _407_C
+
+int main()
+{
+    string s;
+    cin >> s;
+
+    int n = s.size();
+
+    int ans = s[n-1] - '0';
+    for (int d = n - 1; d > 0; d--) {
+        ans += (s[d - 1] + 10 - s[d]) % 10;
+    }
+    ans += n;
+
+    cout << ans << endl;
+
+    return 0;
+}
+
+#endif
+
+#ifdef _408_D
+
 int dp0[200009];
 int dp1[200009];
 int dp10[200009];
@@ -72,13 +379,13 @@ int main()
         for (int i = 1; i < m; i++) {
             if (val[i] == '0') {
                 dp0[i] = dp0[i - 1];
-                dp1[i] = dp1[i-1] + an[i];
-                dp10[i] = dp1[i - 1];
+                dp1[i] = min(dp0[i - 1] + an[i], dp1[i-1] + an[i]);
+                dp10[i] = min(dp1[i - 1], dp10[i-1]);
             }
             else {
-                dp0[i] = min(dp0[i - 1] + an[i], dp1[i-1] + an[i]);
+                dp0[i] = dp0[i - 1] + an[i];
                 dp1[i] = min(dp0[i - 1], dp1[i-1]);
-                dp10[i] = dp1[i-1] + an[i];
+                dp10[i] = min(dp1[i-1] + an[i], dp10[i-1]+an[i]);
             }
         }
 
@@ -87,6 +394,8 @@ int main()
 
     return 0;
 }
+
+#endif
 
 #ifdef _397_C
 int main()
@@ -918,115 +1227,6 @@ int main()
     cout << "No" << endl;
     return 0;
 }
-#endif
-
-
-#ifdef _405_D
-
-char S[1009][1009];
-int  T[1009][1009];
-
-void walk(int h, int w, char S[][1009], int T[][1009], int i, int j, int step, int prev)
-{
-    int dirs[4][2] = { {i + 1, j}, {i - 1, j}, {i, j + 1}, {i, j - 1} };
-    int prev_dir[4] = { 1, 0, 3, 2 };
-    char back[4] = { '^', 'V', '<', '>' };
-    for (int dir = 0; dir < 4; dir++) {
-        if (dir == prev) continue;
-        int ii = dirs[dir][0];
-        int jj = dirs[dir][1];
-        if (ii < 0 || ii >= h) continue;
-        if (jj < 0 || jj >= w) continue;
-
-        int t = T[ii][jj];
-        if (t == 1000000) continue;
-
-        if (t < 0) {
-            T[ii][jj] = step + 1;
-            S[ii][jj] = back[dir];
-            walk(h, w, S, T, ii, jj, step + 1, prev_dir[dir]);
-        }
-        else if (t > step + 1) {
-            T[ii][jj] = step + 1;
-            S[ii][jj] = back[dir];
-            walk(h, w, S, T, ii, jj, step + 1, prev_dir[dir]);
-        }
-    }
-}
-
-int main()
-{
-    int h, w;
-    cin >> h >> w;
-
-    const int HUGE = 1000000;
-
-    vector<pair<int, int>> vE;
-    for (int i = 0; i < h; i++) {
-        for (int j = 0; j < w; j++) {
-            cin >> S[i][j];
-            T[i][j] = HUGE;
-            if (S[i][j] == 'E') {
-                T[i][j] = 0;
-                vE.push_back(make_pair(i, j));
-            }
-            if (S[i][j] == '.') {
-                T[i][j] = -1;
-            }
-        }
-    }
-
-    for (auto& e : vE) {
-        int i = e.first;
-        int j = e.second;
-        walk(h, w, S, T, i, j, 0, -1);
-    }
-    
-    for (int i = 0; i < h; i++) {
-        for (int j = 0; j < w; j++) {
-            cout << S[i][j];
-        }
-        cout << endl;
-    }
-
-    return 0;
-}
-
-#endif
-
-#ifdef _405_C
-
-int main()
-{
-    ll n;
-    unordered_map<ll, ll> A;
-    cin >> n;
-
-    for (ll i = 0; i < n; i++) {
-        ll a;
-        cin >> a;
-        A[a]++;
-    }
-
-    ll sum = 0;
-    ll m = 0;
-    vector<ll> vA;
-    for (auto& e : A) {
-        vA.emplace_back(e.first);
-    }
-    m = vA.size();
-    for (ll i = 0; i < m - 1; i++) {
-        ll Ai = vA[i];
-        for (ll j = i + 1; j < m; j++) {
-            ll Aj = vA[j];
-            sum += Ai * Aj * A[Ai] * A[Aj];
-        }
-    }
-    cout << sum << endl;
-
-    return 0;
-}
-
 #endif
 
 #ifdef _405_B
