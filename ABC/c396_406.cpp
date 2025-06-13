@@ -25,31 +25,102 @@ using ll = long long; // ~ 9*10^18
 
 int main()
 {
-    int n, m;
-    cin >> n >> m;
+    int n;
+    cin >> n;
 
-
-    for (int i = 0; i < m; i++) {
-        int a, b;
-        ll w;
-        cin >> a >> b >> w;
-        a--; b--;
-        G[a].emplace_back(make_pair(b, w));
-        G[b].emplace_back(make_pair(a, w));
+    vector<int> a(n);
+    for (int i = 0; i < n; i++) {
+        cin >> a[i];
     }
 
-    vector<ll> path;
-    set<int> visited;
+    sort(a.rbegin(), a.rend());
 
-    ll ans = (1LL << 63) - 1;
-    visited.insert(0);
-    dfs(G, 0, path, visited, ans);
+    int x = 0;
+    for (int i = 0; i < n; i++) {
+        if (a[i] >= i + 1) {
+            x = i+1;
+        }
+    }
 
-    cout << ans << endl;
+    cout << x << endl;
 
     return 0;
 }
 
+
+#ifdef _409_D
+
+int main()
+{
+    int t;
+    cin >> t;
+
+    for (int q = 0; q < t; q++) {
+        int n;
+        cin >> n;
+        string s;
+        cin >> s;
+
+        int l = 0;
+        int r = 0;
+        for (l = 0; l < n-1; l++) {
+            if (s[l] > s[l+1]) {
+                for (r = l+1; r < n; r++) {
+                    if (s[r] > s[r-1]) {
+                        break;
+                    }
+                    swap(s[r], s[r-1]);
+                }
+                break;
+            }
+        }
+        cout << s << endl;
+    }
+
+    return 0;
+}
+#endif
+
+#ifdef _409_C
+
+int main()
+{
+    int n, l;
+    cin >> n >> l;
+
+    vector<int> d(n);
+    d[0] = 0;
+    for (int i = 0; i < n-1; i++) {
+        cin >> d[i+1];
+    }
+    for (int i = 1; i < n; i++) {
+        d[i] += d[i - 1];
+        d[i] = d[i] % l;
+    }
+
+    if (l % 3 != 0) {
+        cout << 0 << endl;
+        return 0;
+    }
+
+    map<int, ll> cnt;
+    for (int i = 0; i < n; i++) {
+        cnt[d[i]]++;
+    }
+
+    ll ans = 0;
+    int D = l / 3;
+    for (int s = 0; s < D; s++) {
+        if (cnt.count(s) && cnt.count(s + D) && cnt.count(s + 2 * D)) {
+            ans += cnt[s] * cnt[s + D] * cnt[s + 2 * D];
+        }
+    }
+
+    cout << ans << endl;
+    return 0;
+}
+
+#endif
 
 #ifdef _396_D
 
