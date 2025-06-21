@@ -25,28 +25,111 @@ using ll = long long; // ~ 9*10^18
 
 int main()
 {
-    int n;
-    cin >> n;
+    int n, q;
+    cin >> n >> q;
 
-    vector<int> a(n);
-    for (int i = 0; i < n; i++) {
-        cin >> a[i];
-    }
-
-    sort(a.rbegin(), a.rend());
-
-    int x = 0;
-    for (int i = 0; i < n; i++) {
-        if (a[i] >= i + 1) {
-            x = i+1;
+    vector<string> vs;
+    vector<int> server;
+    int server_id = -1;
+    vector<vector<int>> pc(n);
+    string s;
+    for (int i = 0; i < q; i++) {
+        int c, p;
+        cin >> c >> p;
+        p--;
+        if (c == 1) {
+            if (server_id < 0) {
+                pc[p].swap(server);
+                server_id = p;
+            }
+            else {
+                pc[p] = pc[server_id];
+            }
+        }
+        else if (c == 2) {
+            cin >> s;
+            vs.push_back(s);
+            if (p == server_id) {
+                server = pc[p];
+                server_id = -1;
+            }
+            pc[p].push_back(vs.size() - 1);
+        }
+        else if (c == 3) {
+            server_id = p;
+            server.clear();
         }
     }
 
-    cout << x << endl;
+    if (server_id < 0) {
+        for (auto a : server) {
+            cout << vs[a];
+        }
+        cout << endl;
+    }
+    else {
+        for (auto a : pc[server_id]) {
+            cout << vs[a];
+        }
+        cout << endl;
+    }
 
     return 0;
 }
 
+#ifdef _411_C
+
+int main()
+{
+    int n, q;
+    cin >> n >> q;
+
+    map<int, int> A;
+    int num = 0;
+    
+    for (int i = 0; i < q; i++) {
+        int a;
+        cin >> a;
+        a--;
+        if (A.count(a) == 0) {
+            if (a > 0 && A.count(a - 1) && a < n && A.count(a + 1)) {
+                A.insert(make_pair(a, A[a - 1]));
+                num--;
+            }
+            else if (a > 0 && A.count(a - 1)) {
+                A.insert(make_pair(a, A[a - 1]));
+            }
+            else if (a < n && A.count(a + 1)) {
+                A.insert(make_pair(a, A[a + 1]));
+            }
+            else {
+                num++;
+                A.insert(make_pair(a, num));
+            }
+        }
+        else {
+            if (a > 0 && A.count(a - 1) && a < n && A.count(a + 1)) {
+                A.erase(a);
+                num++;
+            }
+            else if (a > 0 && A.count(a - 1)) {
+                A.erase(a);
+            }
+            else if (a < n && A.count(a + 1)) {
+                A.erase(a);
+            }
+            else {
+                num--;
+                A.erase(a);
+            }
+        }
+
+        cout <<num << endl;
+    }
+
+    return 0;
+}
+#endif
 
 #ifdef _409_D
 
